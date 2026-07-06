@@ -1,0 +1,17 @@
+# OwLina AI Studio
+
+OwLina AI Studio is an AI production brand by Alina, AI producer and creative director.
+
+The site presents AI product photography, advertising creatives, AI video, CGI visuals, fashion and beauty campaigns, jewelry visuals, furniture renders, e-commerce content, social media creatives, AI avatar content, and AI influencer content.
+
+OwLina AI Studio works with different niches and adapts the visual style to the specific brand, product, and goal. The production is focused on advertising, e-commerce, social media, and launch content without a physical shoot.
+
+Key pages:
+- Home: https://owlina-ai.github.io/ai-portfolio/index.html
+- Ukrainian home: https://owlina-ai.github.io/ai-portfolio/index_.html
+- English home: https://owlina-ai.github.io/ai-portfolio/en.html
+- Projects: https://owlina-ai.github.io/ai-portfolio/projects.html
+- Static AI creatives: https://owlina-ai.github.io/ai-portfolio/static.html
+- AI video: https://owlina-ai.github.io/ai-portfolio/videos.html
+
+Contact: owlinaai@gmail.com, https://t.me/OwLinaAI, https://www.instagram.com/owlinaai
