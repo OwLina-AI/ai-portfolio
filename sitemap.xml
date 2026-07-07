@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/index.html</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/index_.html</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/projects.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/projects-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/static.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/static-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/videos.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://owlina-ai.github.io/ai-portfolio/videos-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/index.html</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://owlinaai.com/index_.html</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://owlinaai.com/en/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/projects.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/projects-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/static.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/static-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/videos.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://owlinaai.com/videos-en.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
