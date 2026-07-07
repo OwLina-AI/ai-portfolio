@@ -22,6 +22,10 @@ function mediaFigure(item,extra=''){
   return `<figure class="shot ${extra}" data-cats="${cats.join(',')}" data-src="${item.src}" data-alt="${item.alt||caption}"><img loading="lazy" src="${item.src}" alt="${item.alt||caption}"><figcaption>${caption}</figcaption></figure>`
 }
 function card(p){return `<a class="project-card" href="${lang==='en'?'projects-en.html':'projects.html'}#${p.id}"><figure><img loading="lazy" src="${p.card}" alt="${p.name} AI creative project by OwLina AI Studio"></figure><div class="project-card-body"><h3>${p.name}</h3><p>${short(p.desc[lang])}</p><div class="pill-row">${p.tools.slice(0,3).map(x=>`<span class="pill">${x}</span>`).join('')}</div></div></a>`}
+function posterFor(src){
+  if(!src||!src.includes('res.cloudinary.com')||!src.includes('/video/upload/'))return '';
+  return src.replace('/video/upload/','/video/upload/so_1,q_auto,f_jpg/').replace(/\.(mp4|mov|webm)(\?.*)?$/i,'.jpg');
+}
 function allStatic(){
   let all=DATA.staticLibrary ? [...DATA.staticLibrary] : [];
   if(!all.length){
@@ -74,7 +78,7 @@ function renderVideosPage(){
   if(filters)filters.innerHTML=DATA.videoCategories.map((c,i)=>`<button class="video-filter filter-btn ${i===0?'active':''}" data-video-cat="${c.id}">${c[lang]}</button>`).join('');
   full.innerHTML=DATA.videos.map(videoCard).join('');
 }
-function videoCard(v){return `<article class="video-card" data-category="${v.category}"><video src="${v.src}" controls muted playsinline preload="metadata"></video><h3>${v.title}</h3></article>`}
+function videoCard(v){const poster=posterFor(v.src);return `<article class="video-card" data-category="${v.category}" data-video-src="${v.src}"><video src="${v.src}" ${poster?`poster="${poster}"`:''} controls muted playsinline preload="metadata"></video><h3>${v.title}</h3></article>`}
 renderHome();renderProjects();renderVideosPage();
 document.addEventListener('click',e=>{
   const videoFilter=e.target.closest('.video-filter'); if(videoFilter){$$('.video-filter').forEach(x=>x.classList.remove('active'));videoFilter.classList.add('active');const cat=videoFilter.dataset.videoCat;$$('#all-video-grid .video-card').forEach(card=>{card.style.display=(cat==='all'||card.dataset.category===cat)?'':'none'});}
@@ -84,15 +88,17 @@ document.addEventListener('click',e=>{
   const faq=e.target.closest('.faq-q'); if(faq)faq.closest('.faq-item').classList.toggle('open');
 });
 let lbItems=[],lbIndex=0,scale=1,tx=0,ty=0,drag=false,sx=0,sy=0;
-function collect(){lbItems=$$('.shot').filter(el=>getComputedStyle(el).display!=='none').map(el=>({src:el.dataset.src,alt:el.dataset.alt}))}
+function isVisible(el){return getComputedStyle(el).display!=='none'&&!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)}
+function collect(scope=document){lbItems=$$('.shot',scope).filter(isVisible).map(el=>({src:el.dataset.src,alt:el.dataset.alt}))}
 function apply(){const im=$('#lb-img');if(im)im.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`}
-function openLbBySrc(src){collect();lbIndex=Math.max(0,lbItems.findIndex(x=>x.src===src));scale=1;tx=0;ty=0;const im=$('#lb-img');im.src=lbItems[lbIndex].src;im.alt=lbItems[lbIndex].alt;$('.lightbox').classList.add('open');apply()}
-document.addEventListener('click',e=>{const sh=e.target.closest('.shot');if(sh)openLbBySrc(sh.dataset.src);if(e.target.matches('.lb-close'))$('.lightbox').classList.remove('open');if(e.target.matches('.lb-prev')){collect();lbIndex=(lbIndex-1+lbItems.length)%lbItems.length;openLbBySrc(lbItems[lbIndex].src)}if(e.target.matches('.lb-next')){collect();lbIndex=(lbIndex+1)%lbItems.length;openLbBySrc(lbItems[lbIndex].src)}});
+function showLbItem(){scale=1;tx=0;ty=0;const im=$('#lb-img');if(!im||!lbItems.length)return;im.src=lbItems[lbIndex].src;im.alt=lbItems[lbIndex].alt;$('.lightbox').classList.add('open');apply()}
+function openLbFromShot(sh){const scope=sh.closest('.mini-gallery,.masonry,#static-gallery')||document;collect(scope);lbIndex=Math.max(0,lbItems.findIndex(x=>x.src===sh.dataset.src));showLbItem()}
+document.addEventListener('click',e=>{const sh=e.target.closest('.shot');if(sh)openLbFromShot(sh);if(e.target.matches('.lb-close'))$('.lightbox').classList.remove('open');if(e.target.matches('.lb-prev')&&lbItems.length){lbIndex=(lbIndex-1+lbItems.length)%lbItems.length;showLbItem()}if(e.target.matches('.lb-next')&&lbItems.length){lbIndex=(lbIndex+1)%lbItems.length;showLbItem()}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('.lightbox')?.classList.remove('open')});
 const vp=$('.lightbox-viewport');if(vp){vp.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(6,Math.max(1,scale+(e.deltaY<0?.25:-.25)));if(scale===1){tx=0;ty=0}apply()},{passive:false});vp.addEventListener('pointerdown',e=>{drag=true;sx=e.clientX-tx;sy=e.clientY-ty;vp.setPointerCapture(e.pointerId)});vp.addEventListener('pointermove',e=>{if(!drag||scale===1)return;tx=e.clientX-sx;ty=e.clientY-sy;apply()});vp.addEventListener('pointerup',()=>drag=false)}
 document.addEventListener('mouseover',e=>{const card=e.target.closest('.video-card');if(!card)return;const v=card.querySelector('video');if(v){v.muted=true;v.play().catch(()=>{})}});
 document.addEventListener('mouseout',e=>{const card=e.target.closest('.video-card');if(!card||card.contains(e.relatedTarget))return;const v=card.querySelector('video');if(v){v.pause();v.currentTime=0}});
-document.addEventListener('click',e=>{const card=e.target.closest('.video-card');if(!card)return;const v=card.querySelector('video');if(!v)return;const modal=$('.video-modal');const player=$('#video-modal-player');if(modal&&player){player.src=v.currentSrc||v.src;player.play().catch(()=>{});modal.classList.add('open')}});
+document.addEventListener('click',e=>{const card=e.target.closest('.video-card');if(!card)return;const src=card.dataset.videoSrc||card.querySelector('video')?.currentSrc||card.querySelector('video')?.src;if(!src)return;const modal=$('.video-modal');const player=$('#video-modal-player');if(modal&&player){player.src=src;player.play().catch(()=>{});modal.classList.add('open')}});
 document.addEventListener('click',e=>{if(e.target.matches('.video-modal-close')||e.target.matches('.video-modal')){const modal=$('.video-modal');const player=$('#video-modal-player');if(player){player.pause();player.removeAttribute('src');player.load()}modal?.classList.remove('open')}});
 const aboutGrid=$('.about-grid');
 if(aboutGrid&&'IntersectionObserver' in window){
