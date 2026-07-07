@@ -58,6 +58,8 @@ body{background:#0D0D0D}.hero{background:#0D0D0D;position:relative;overflow:hidd
   .video-card h3{font-size:10px;line-height:1.15;margin:6px 2px}
   .case .masonry{columns:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .case .video-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .case .video-card{width:100%;max-width:100%;justify-self:stretch;min-width:0}
+  .case .video-card video{width:100%;height:auto;aspect-ratio:auto;object-fit:contain;max-height:72vh}
   .case{scroll-margin-top:150px}
   .lightbox button{z-index:4}
   .lb-close{top:14px;right:14px}
