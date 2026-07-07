@@ -108,7 +108,7 @@ window.OWLINA_DATA = {
     {
       "id": "armani",
       "featured": true,
-      "name": "Giorgio Armani Sì",
+      "name": "Giorgio Armani",
       "card": "https://res.cloudinary.com/kqaywdm5/image/upload/v1783116477/Armani_2_wewndt.png",
       "tools": [
         "ChatGPT Imagen 2.0",

@@ -19,12 +19,21 @@ function catFor(item, fallback='ads'){
 function mediaFigure(item,extra=''){
   const cats=item.cats||[item.cat||catFor(item)];
   const caption=item.caption||'AI static creative';
-  return `<figure class="shot ${extra}" data-cats="${cats.join(',')}" data-src="${item.src}" data-alt="${item.alt||caption}"><img loading="lazy" src="${item.src}" alt="${item.alt||caption}"><figcaption>${caption}</figcaption></figure>`
+  const preview=cloudinaryImage(item.src,760);
+  return `<figure class="shot ${extra}" data-cats="${cats.join(',')}" data-src="${item.src}" data-alt="${item.alt||caption}"><img loading="lazy" decoding="async" src="${preview}" alt="${item.alt||caption}"><figcaption>${caption}</figcaption></figure>`
 }
-function card(p){return `<a class="project-card" href="${lang==='en'?'projects-en.html':'projects.html'}#${p.id}"><figure><img loading="lazy" src="${p.card}" alt="${p.name} AI creative project by OwLina AI Studio"></figure><div class="project-card-body"><h3>${p.name}</h3><p>${short(p.desc[lang])}</p><div class="pill-row">${p.tools.slice(0,3).map(x=>`<span class="pill">${x}</span>`).join('')}</div></div></a>`}
+function cloudinaryImage(src,w=900){
+  if(!src||!src.includes('res.cloudinary.com')||!src.includes('/image/upload/'))return src;
+  return src.replace('/image/upload/',`/image/upload/f_auto,q_auto,c_limit,w_${w}/`);
+}
+function cloudinaryVideo(src,w=720){
+  if(!src||!src.includes('res.cloudinary.com')||!src.includes('/video/upload/'))return src;
+  return src.replace('/video/upload/',`/video/upload/q_auto,c_limit,w_${w}/`);
+}
+function card(p){return `<a class="project-card" href="${lang==='en'?'projects-en.html':'projects.html'}#${p.id}"><figure><img loading="lazy" decoding="async" src="${cloudinaryImage(p.card,640)}" alt="${p.name} AI creative project by OwLina AI Studio"></figure><div class="project-card-body"><h3>${p.name}</h3><p>${short(p.desc[lang])}</p><div class="pill-row">${p.tools.slice(0,3).map(x=>`<span class="pill">${x}</span>`).join('')}</div></div></a>`}
 function posterFor(src){
   if(!src||!src.includes('res.cloudinary.com')||!src.includes('/video/upload/'))return '';
-  return src.replace('/video/upload/','/video/upload/so_1,q_auto,f_jpg/').replace(/\.(mp4|mov|webm)(\?.*)?$/i,'.jpg');
+  return src.replace('/video/upload/','/video/upload/so_1,f_jpg,q_auto,c_limit,w_640/').replace(/\.(mp4|mov|webm)(\?.*)?$/i,'.jpg');
 }
 function allStatic(){
   let all=DATA.staticLibrary ? [...DATA.staticLibrary] : [];
@@ -69,8 +78,11 @@ function renderProjects(){
   const list=$('#case-list'); if(!list)return;
   list.innerHTML=DATA.projects.map(p=>{
     const before=[...(p.before||[]),...(p.process||[])];
-    return `<article class="case" id="${p.id}"><h2>${p.name}</h2><div class="case-layout"><div class="case-top"><aside class="case-aside"><p class="case-copy">${p.desc[lang]}</p><div class="pill-row">${p.tools.map(x=>`<span class="pill">${x}</span>`).join('')}</div></aside>${before.length?`<div class="case-before"><h3>${lang==='en'?'Before / process':'До / процес'}</h3><div class="mini-gallery">${before.map(x=>mediaFigure(x)).join('')}</div></div>`:''}</div><div><h3>AI Production</h3><div class="masonry">${(p.works||[]).map(x=>mediaFigure(x)).join('')}</div>${p.videos&&p.videos.length?`<h3>${lang==='en'?'Video':'Відео'}</h3><div class="video-grid">${p.videos.map(v=>`<article class="video-card"><video src="${v.src}" controls muted playsinline preload="metadata"></video><h3>${v.title}</h3></article>`).join('')}</div>`:''}</div></div></article>`
+    return `<article class="case" id="${p.id}"><h2>${p.name}</h2><div class="case-layout"><div class="case-top"><aside class="case-aside"><p class="case-copy">${p.desc[lang]}</p><div class="pill-row">${p.tools.map(x=>`<span class="pill">${x}</span>`).join('')}</div></aside>${before.length?`<div class="case-before"><h3>${lang==='en'?'Before / process':'До / процес'}</h3><div class="mini-gallery">${before.map(x=>mediaFigure(x)).join('')}</div></div>`:''}</div><div><h3>AI Production</h3><div class="masonry">${(p.works||[]).map(x=>mediaFigure(x)).join('')}</div>${p.videos&&p.videos.length?`<h3>${lang==='en'?'Video':'Відео'}</h3><div class="video-grid">${p.videos.map(videoCard).join('')}</div>`:''}</div></div></article>`
   }).join('');
+  if(location.hash){
+    requestAnimationFrame(()=>document.querySelector(location.hash)?.scrollIntoView({block:'start'}));
+  }
 }
 function renderVideosPage(){
   const full=$('#all-video-grid'); if(!full)return;
@@ -78,7 +90,7 @@ function renderVideosPage(){
   if(filters)filters.innerHTML=DATA.videoCategories.map((c,i)=>`<button class="video-filter filter-btn ${i===0?'active':''}" data-video-cat="${c.id}">${c[lang]}</button>`).join('');
   full.innerHTML=DATA.videos.map(videoCard).join('');
 }
-function videoCard(v){const poster=posterFor(v.src);return `<article class="video-card" data-category="${v.category}" data-video-src="${v.src}"><video src="${v.src}" ${poster?`poster="${poster}"`:''} controls muted playsinline preload="metadata"></video><h3>${v.title}</h3></article>`}
+function videoCard(v){const poster=posterFor(v.src);const webVideo=cloudinaryVideo(v.src,720);return `<article class="video-card" data-category="${v.category}" data-video-src="${webVideo}"><video src="${webVideo}" ${poster?`poster="${poster}"`:''} controls muted playsinline preload="none"></video><h3>${v.title}</h3></article>`}
 renderHome();renderProjects();renderVideosPage();
 document.addEventListener('click',e=>{
   const videoFilter=e.target.closest('.video-filter'); if(videoFilter){$$('.video-filter').forEach(x=>x.classList.remove('active'));videoFilter.classList.add('active');const cat=videoFilter.dataset.videoCat;$$('#all-video-grid .video-card').forEach(card=>{card.style.display=(cat==='all'||card.dataset.category===cat)?'':'none'});}
