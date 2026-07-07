@@ -35,6 +35,15 @@ function posterFor(src){
   if(!src||!src.includes('res.cloudinary.com')||!src.includes('/video/upload/'))return '';
   return src.replace('/video/upload/','/video/upload/so_1,f_jpg,q_auto,c_limit,w_640/').replace(/\.(mp4|mov|webm)(\?.*)?$/i,'.jpg');
 }
+function scrollToHash(){
+  if(!location.hash)return;
+  const target=document.querySelector(location.hash);
+  if(!target)return;
+  const header=document.querySelector('.site-header');
+  const offset=(header?.offsetHeight||0)+14;
+  const top=target.getBoundingClientRect().top+window.scrollY-offset;
+  window.scrollTo({top:Math.max(0,top),behavior:'auto'});
+}
 function allStatic(){
   let all=DATA.staticLibrary ? [...DATA.staticLibrary] : [];
   if(!all.length){
@@ -81,7 +90,9 @@ function renderProjects(){
     return `<article class="case" id="${p.id}"><h2>${p.name}</h2><div class="case-layout"><div class="case-top"><aside class="case-aside"><p class="case-copy">${p.desc[lang]}</p><div class="pill-row">${p.tools.map(x=>`<span class="pill">${x}</span>`).join('')}</div></aside>${before.length?`<div class="case-before"><h3>${lang==='en'?'Before / process':'До / процес'}</h3><div class="mini-gallery">${before.map(x=>mediaFigure(x)).join('')}</div></div>`:''}</div><div><h3>AI Production</h3><div class="masonry">${(p.works||[]).map(x=>mediaFigure(x)).join('')}</div>${p.videos&&p.videos.length?`<h3>${lang==='en'?'Video':'Відео'}</h3><div class="video-grid">${p.videos.map(videoCard).join('')}</div>`:''}</div></div></article>`
   }).join('');
   if(location.hash){
-    requestAnimationFrame(()=>document.querySelector(location.hash)?.scrollIntoView({block:'start'}));
+    if('scrollRestoration' in history)history.scrollRestoration='manual';
+    requestAnimationFrame(scrollToHash);
+    [240,700,1400,2200].forEach(delay=>setTimeout(scrollToHash,delay));
   }
 }
 function renderVideosPage(){
