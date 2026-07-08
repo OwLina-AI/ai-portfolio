@@ -133,9 +133,16 @@ if(briefForm){
   contactField?.addEventListener('input',validateContact);
   briefForm.addEventListener('submit',async e=>{
     e.preventDefault();
-    if(!validateContact()){contactField.reportValidity();return;}
     const status=$('.brief-status');
     status.classList.remove('error');
+    status.textContent='';
+    if(!validateContact()){
+      status.textContent=lang==='en'?'Enter Telegram as @username or a phone number with at least 10 digits.':'Вкажіть Telegram у форматі @username або телефон мінімум з 10 цифрами.';
+      status.classList.add('error');
+      contactField.reportValidity();
+      contactField.focus();
+      return;
+    }
     if(FORMSPREE_ENDPOINT.includes('REPLACE_WITH_YOUR_ID')){
       status.textContent=lang==='en'?'Formspree is not connected yet. Add your Formspree form ID first.':'Formspree ще не підключено. Спочатку додайте ID форми Formspree.';
       status.classList.add('error');
