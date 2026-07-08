@@ -94,3 +94,5 @@ body{background:#0D0D0D}.hero{background:#0D0D0D;position:relative;overflow:hidd
 .disc[data-open-brief]{font-family:inherit}
 button.disc{appearance:none}
 @media(max-width:560px){.brief-modal{padding:12px}.brief-dialog{padding:28px 18px}.brief-close{top:10px;right:10px}}
+
+.contact-primary{display:flex;justify-content:center;margin:0 0 18px}.contact-primary .disc{min-width:220px;text-align:center}.contact-links{margin-top:0}

@@ -3,7 +3,7 @@ const DATA=window.OWLINA_DATA;
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const lang=document.documentElement.lang.startsWith('en')?'en':'ua';
-const FORMSPREE_ENDPOINT='https://formspree.io/f/REPLACE_WITH_YOUR_ID';
+const FORMSPREE_ENDPOINT='https://formspree.io/f/xbdveazg';
 const showAllText=lang==='en'?'Show all':'Показати всі';
 function short(t){return t.length>135?t.slice(0,132)+'...':t}
 function catFor(item, fallback='ads'){
