@@ -91,6 +91,9 @@ body{background:#0D0D0D}.hero{background:#0D0D0D;position:relative;overflow:hidd
 .brief-submit:hover{background:#c94d1e}
 .brief-status{min-height:22px;color:#9ed9e3;font-weight:800;line-height:1.5;margin:4px 0 0}
 .brief-status.error{color:#ffb79c}
+.brief-success{display:none;min-height:180px;place-items:center;text-align:center;color:#dff6f8;font-size:20px;font-weight:900;line-height:1.7;padding:38px 10px}
+.brief-dialog.sent .brief-title,.brief-dialog.sent .brief-subtitle,.brief-dialog.sent .brief-form{display:none}
+.brief-dialog.sent .brief-success{display:grid}
 .disc[data-open-brief]{font-family:inherit}
 button.disc{appearance:none}
 @media(max-width:560px){.brief-modal{padding:12px}.brief-dialog{padding:28px 18px}.brief-close{top:10px;right:10px}}

@@ -114,13 +114,26 @@ document.addEventListener('click',e=>{
   const serviceTab=e.target.closest('.stab'); if(serviceTab){$$('.stab').forEach(x=>x.classList.remove('active'));$$('.spanel').forEach(x=>x.classList.remove('active'));serviceTab.classList.add('active');$('#p-'+serviceTab.dataset.p)?.classList.add('active');}
   const show=e.target.closest('[data-show-static]'); if(show){location.href=lang==='en'?'static-en.html':'static.html';}
   const faq=e.target.closest('.faq-q'); if(faq)faq.closest('.faq-item').classList.toggle('open');
-  const openBrief=e.target.closest('[data-open-brief]'); if(openBrief){e.preventDefault();$('.brief-modal')?.classList.add('open');}
+  const openBrief=e.target.closest('[data-open-brief]'); if(openBrief){e.preventDefault();const modal=$('.brief-modal');modal?.querySelector('.brief-dialog')?.classList.remove('sent');modal?.classList.add('open');}
   const closeBrief=e.target.closest('[data-close-brief]'); if(closeBrief||e.target.matches('.brief-modal'))$('.brief-modal')?.classList.remove('open');
 });
 const briefForm=$('.brief-form');
 if(briefForm){
+  const contactField=$('#brief-contact');
+  const validateContact=()=>{
+    if(!contactField)return true;
+    const v=contactField.value.trim();
+    const digits=v.replace(/\D/g,'');
+    const isTelegram=/^@[A-Za-z0-9_]{3,32}$/.test(v);
+    const isPhone=digits.length>=10;
+    const msg=lang==='en'?'Enter Telegram as @username or a phone number with at least 10 digits.':'Вкажіть Telegram у форматі @username або телефон мінімум з 10 цифрами.';
+    contactField.setCustomValidity(isTelegram||isPhone?'':msg);
+    return contactField.checkValidity();
+  };
+  contactField?.addEventListener('input',validateContact);
   briefForm.addEventListener('submit',async e=>{
     e.preventDefault();
+    if(!validateContact()){contactField.reportValidity();return;}
     const status=$('.brief-status');
     status.classList.remove('error');
     if(FORMSPREE_ENDPOINT.includes('REPLACE_WITH_YOUR_ID')){
@@ -135,7 +148,11 @@ if(briefForm){
       const res=await fetch(FORMSPREE_ENDPOINT,{method:'POST',headers:{Accept:'application/json'},body:new FormData(briefForm)});
       if(!res.ok)throw new Error('send failed');
       briefForm.reset();
-      status.textContent=briefForm.dataset.success;
+      status.textContent='';
+      const dialog=briefForm.closest('.brief-dialog');
+      const success=dialog?.querySelector('.brief-success');
+      if(success)success.textContent=briefForm.dataset.success;
+      dialog?.classList.add('sent');
     }catch(err){
       status.textContent=lang==='en'?'Something went wrong. Please try again or contact me on Telegram.':'Щось пішло не так. Спробуйте ще раз або напишіть мені в Telegram.';
       status.classList.add('error');
