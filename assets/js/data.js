@@ -1221,6 +1221,11 @@ window.OWLINA_DATA = {
       "category": "creative"
     },
     {
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1784547631/0718_rlgwmo.mp4",
+      "title": "AI Fashion Editorial Motion",
+      "category": "fashion"
+    },
+    {
       "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1782947545/Cartoon_Mother_s_day_bvflji.mp4",
       "title": "Cartoon Mother's Day Animation",
       "category": "animation"
@@ -1328,6 +1333,11 @@ window.OWLINA_DATA = {
       "id": "creative",
       "ua": "Креативні",
       "en": "Creative"
+    },
+    {
+      "id": "fashion",
+      "ua": "Fashion",
+      "en": "Fashion"
     },
     {
       "id": "animation",

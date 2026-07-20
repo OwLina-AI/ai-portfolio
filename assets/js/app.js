@@ -84,7 +84,7 @@ function applyStaticFilter(cat){
 function renderHome(){
   const grid=$('#featured-projects'); if(grid)grid.innerHTML=DATA.projects.filter(p=>p.featured).map(card).join('');
   renderStatic();
-  const featuredNames=['Amelie Accessories video campaign','Armani Sì campaign edit','BlinkBetter CGI ingredients','Velour Store motion creative','Cartoon Strawberry Banana Love Animation','AI Influencer Kiara Lifestyle Video','HeyGen AI Avatar: Saving Our Oceans','AI Memories Emotional Video Creative'];
+  const featuredNames=['Amelie Accessories video campaign','Armani Sì campaign edit','BlinkBetter CGI ingredients','Velour Store motion creative','Cartoon Strawberry Banana Love Animation','AI Influencer Kiara Lifestyle Video','HeyGen AI Avatar: Saving Our Oceans','AI Fashion Editorial Motion'];
   const featuredVideos=featuredNames.map(name=>DATA.videos.find(v=>v.title===name)).filter(Boolean);
   const mv=$('#motion-grid'); if(mv)mv.innerHTML=featuredVideos.map(videoCard).join('');
 }
