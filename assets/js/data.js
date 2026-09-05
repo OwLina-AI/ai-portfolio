@@ -873,6 +873,22 @@ window.OWLINA_DATA = {
       "caption": "Food ad creative"
     },
     {
+      "src": "https://res.cloudinary.com/kqaywdm5/image/upload/v1788593354/29cbecd7e6418318646170ad478de65d_646f34c3-1941-4ba7-a7e0-51d3f99a237c_yeosfw.jpg",
+      "cats": [
+        "furniture"
+      ],
+      "alt": "Furniture product visual by OwLina AI Studio",
+      "caption": "Furniture product visual"
+    },
+    {
+      "src": "https://res.cloudinary.com/kqaywdm5/image/upload/v1788593355/IMG_0749_y3zrxo.jpg",
+      "cats": [
+        "furniture"
+      ],
+      "alt": "Furniture lifestyle visual by OwLina AI Studio",
+      "caption": "Furniture lifestyle visual"
+    },
+    {
       "src": "https://res.cloudinary.com/kqaywdm5/image/upload/v1783116638/Woodnest_store_-_%D0%A1urtain_rod_set_Design_dwv0gw.jpg",
       "cats": [
         "furniture"
@@ -1167,7 +1183,7 @@ window.OWLINA_DATA = {
     "https://res.cloudinary.com/kqaywdm5/image/upload/v1783116638/Woodnest_store_-_%D0%A1urtain_rod_set_Design_dwv0gw.jpg",
     "https://res.cloudinary.com/kqaywdm5/image/upload/v1783116668/Harlem_Baking_1_ijhvkn.jpg",
     "https://res.cloudinary.com/kqaywdm5/image/upload/v1783116558/Shelly_Summer_2_dustye.jpg",
-    "https://res.cloudinary.com/kqaywdm5/image/upload/v1783117604/Shelly_Summer_5_vhyroq.png"
+    "https://res.cloudinary.com/kqaywdm5/image/upload/v1788593355/IMG_0749_y3zrxo.jpg"
   ],
   "videos": [
     {
@@ -1216,13 +1232,18 @@ window.OWLINA_DATA = {
       "category": "creative"
     },
     {
-      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1782947533/AI_Memories_hwipsl.mp4",
-      "title": "AI Memories Emotional Video Creative",
-      "category": "creative"
-    },
-    {
       "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1784547631/0718_rlgwmo.mp4",
       "title": "AI Fashion Editorial Motion",
+      "category": "fashion"
+    },
+    {
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788593105/IMG_9844_emybdy.mp4",
+      "title": "Fashion Full Look Motion Editorial",
+      "category": "fashion"
+    },
+    {
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788592857/52c500eef3f3f94b295652a69ab63c93_da85b3d0-6884-4cc7-82e2-2be59b17d4d0_nrals2.mp4",
+      "title": "Fashion Bag Motion Creative",
       "category": "fashion"
     },
     {
@@ -1231,8 +1252,18 @@ window.OWLINA_DATA = {
       "category": "animation"
     },
     {
-      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1782947552/Cartoon_Strawberry_Banana_Love_vmy7m5.mp4",
-      "title": "Cartoon Strawberry Banana Love Animation",
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788593027/DONE_y0lhyd.mp4",
+      "title": "Cartoon Snail Pavlyk Product Story",
+      "category": "animation"
+    },
+    {
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788592977/0610_kasfue.mp4",
+      "title": "Cartoon Strawberry Banana Product Story",
+      "category": "animation"
+    },
+    {
+      "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788592894/DONE_1_coalmo.mp4",
+      "title": "Cartoon Product Animation",
       "category": "animation"
     },
     {
