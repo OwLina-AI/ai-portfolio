@@ -1253,7 +1253,7 @@ window.OWLINA_DATA = {
     },
     {
       "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788593027/DONE_y0lhyd.mp4",
-      "title": "Cartoon Snail Pavlyk Product Story",
+      "title": "Cartoon Product Animation",
       "category": "animation"
     },
     {
@@ -1263,7 +1263,7 @@ window.OWLINA_DATA = {
     },
     {
       "src": "https://res.cloudinary.com/kqaywdm5/video/upload/v1788592894/DONE_1_coalmo.mp4",
-      "title": "Cartoon Product Animation",
+      "title": "AI Cartoon Mascot for Shelley",
       "category": "animation"
     },
     {
