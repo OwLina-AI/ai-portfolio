@@ -1,10 +1,65 @@
 
-const DATA=window.OWLINA_DATA;
+let DATA=window.OWLINA_DATA;
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const lang=document.documentElement.lang.startsWith('en')?'en':'ua';
 const FORMSPREE_ENDPOINT='https://formspree.io/f/xbdveazg';
 const showAllText=lang==='en'?'Show all':'Показати всі';
+function localized(row,field){return row?.[`${field}_${lang}`]||row?.[`${field}_ua`]||row?.[`${field}_en`]||''}
+function featuredOrder(a,b){return (a.featured_order??a.sort_order??9999)-(b.featured_order??b.sort_order??9999)}
+async function loadSupabasePortfolio(){
+  const config=window.OWLINA_SUPABASE;
+  if(!window.supabase?.createClient||!config?.url||!config?.publishableKey)return null;
+  const client=window.supabase.createClient(config.url,config.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  const [projectsResult,assetsResult,mediaResult,galleryResult]=await Promise.all([
+    client.from('projects').select('*').eq('published',true).order('sort_order'),
+    client.from('media_assets').select('*').eq('archived',false).eq('public_visible',true),
+    client.from('project_media').select('*').eq('published',true).order('sort_order'),
+    client.from('gallery_items').select('*').eq('published',true).order('sort_order')
+  ]);
+  const failed=[projectsResult,assetsResult,mediaResult,galleryResult].find(result=>result.error);
+  if(failed)throw failed.error;
+  const assets=new Map((assetsResult.data||[]).map(asset=>[asset.id,asset]));
+  const media=(mediaResult.data||[]).filter(item=>assets.has(item.asset_id));
+  const gallery=(galleryResult.data||[]).filter(item=>assets.has(item.asset_id));
+  const imageItem=(item)=>{
+    const asset=assets.get(item.asset_id);
+    const caption=localized(item,'caption')||localized(item,'title')||localized(asset,'alt')||'AI static creative';
+    return {src:asset.source_url,alt:localized(asset,'alt')||caption,caption,cats:item.categories||[]};
+  };
+  const videoItem=(item)=>{
+    const asset=assets.get(item.asset_id);
+    return {src:asset.source_url,title:localized(item,'title')||localized(asset,'alt')||'AI Video',category:item.category||(item.categories||[])[0]||'creative',featured:!!item.featured};
+  };
+  const remoteProjects=(projectsResult.data||[]).map(project=>{
+    const parts=media.filter(item=>item.project_id===project.id);
+    const cover=assets.get(project.cover_asset_id);
+    const images=(section)=>parts.filter(item=>item.section===section&&assets.get(item.asset_id)?.media_type==='image').map(imageItem);
+    const projectVideos=parts.filter(item=>item.section==='video'&&assets.get(item.asset_id)?.media_type==='video').map(videoItem);
+    const works=images('works');
+    return {
+      id:project.id,
+      name:localized(project,'name'),
+      desc:{ua:project.description_ua||'',en:project.description_en||project.description_ua||''},
+      card:cover?.source_url||works[0]?.src||'',
+      tools:project.tools||[],
+      featured:!!project.featured,
+      before:images('before'),
+      process:images('process'),
+      works,
+      videos:projectVideos
+    };
+  });
+  const staticRows=gallery.filter(item=>item.gallery_type==='static');
+  const videoRows=gallery.filter(item=>item.gallery_type==='video');
+  return {
+    ...DATA,
+    projects:remoteProjects,
+    staticLibrary:staticRows.map(imageItem),
+    staticFeatured:staticRows.filter(item=>item.featured).sort(featuredOrder).map(item=>assets.get(item.asset_id).source_url),
+    videos:videoRows.map(videoItem)
+  };
+}
 function short(t){return t.length>135?t.slice(0,132)+'...':t}
 function catFor(item, fallback='ads'){
   const s=(item.src||'').toLowerCase();
@@ -85,7 +140,8 @@ function renderHome(){
   const grid=$('#featured-projects'); if(grid)grid.innerHTML=DATA.projects.filter(p=>p.featured).map(card).join('');
   renderStatic();
   const featuredNames=['Amelie Accessories video campaign','Armani Sì campaign edit','BlinkBetter CGI ingredients','Fashion Full Look Motion Editorial','AI Cartoon Mascot for Shelley','AI Influencer Kiara Lifestyle Video','HeyGen AI Avatar: Saving Our Oceans','AI Fashion Editorial Motion'];
-  const featuredVideos=featuredNames.map(name=>DATA.videos.find(v=>v.title===name)).filter(Boolean);
+  const selectedVideos=DATA.videos.filter(v=>v.featured).slice(0,8);
+  const featuredVideos=selectedVideos.length?selectedVideos:featuredNames.map(name=>DATA.videos.find(v=>v.title===name)).filter(Boolean);
   const mv=$('#motion-grid'); if(mv)mv.innerHTML=featuredVideos.map(videoCard).join('');
 }
 function renderProjects(){
@@ -107,7 +163,13 @@ function renderVideosPage(){
   full.innerHTML=DATA.videos.map(videoCard).join('');
 }
 function videoCard(v){const poster=posterFor(v.src);const webVideo=cloudinaryVideo(v.src,720);return `<article class="video-card" data-category="${v.category}" data-video-src="${webVideo}"><video src="${webVideo}" ${poster?`poster="${poster}"`:''} controls muted playsinline preload="none"></video><h3>${v.title}</h3></article>`}
-renderHome();renderProjects();renderVideosPage();
+function renderPortfolio(){renderHome();renderProjects();renderVideosPage()}
+renderPortfolio();
+loadSupabasePortfolio().then(remote=>{
+  if(!remote)return;
+  DATA=remote;
+  renderPortfolio();
+}).catch(error=>console.warn('OwLina portfolio fallback is active:',error.message));
 document.addEventListener('click',e=>{
   const videoFilter=e.target.closest('.video-filter'); if(videoFilter){$$('.video-filter').forEach(x=>x.classList.remove('active'));videoFilter.classList.add('active');const cat=videoFilter.dataset.videoCat;$$('#all-video-grid .video-card').forEach(card=>{card.style.display=(cat==='all'||card.dataset.category===cat)?'':'none'});}
   const filter=e.target.closest('.filter-btn:not(.video-filter)'); if(filter)applyStaticFilter(filter.dataset.cat);
