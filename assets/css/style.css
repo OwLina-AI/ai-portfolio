@@ -116,3 +116,7 @@ button.disc{appearance:none}
 .lightbox-viewport{position:relative;z-index:1}
 .lightbox button{z-index:6;pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .lb-close{z-index:7}
+.lightbox-viewport{touch-action:none;cursor:default}
+.lightbox-viewport.can-pan{cursor:grab}
+.lightbox-viewport.is-panning{cursor:grabbing}
+.lightbox img{pointer-events:auto;user-select:none;-webkit-user-drag:none;will-change:transform}
