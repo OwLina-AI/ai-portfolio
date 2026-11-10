@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>OwLina Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./admin-fixes.css">
+  <link rel="stylesheet" href="./admin-upload.css">
+</head>
+<body>
+  <main id="login-view" class="login-shell">
+    <section class="login-panel">
+      <div class="brand"><span class="brand-owl">Ow</span><span class="brand-lina">Lina</span><small>Admin</small></div>
+      <h1>Панель керування</h1>
+      <p>Увійдіть за допомогою облікового запису адміністратора.</p>
+      <form id="login-form">
+        <label>Email<input id="login-email" type="email" autocomplete="email" required></label>
+        <label>Пароль<input id="login-password" type="password" autocomplete="current-password" required></label>
+        <button class="primary-btn" type="submit">Увійти</button>
+        <p id="login-error" class="form-error" role="alert"></p>
+      </form>
+    </section>
+  </main>
+
+  <div id="admin-view" class="admin-shell" hidden>
+    <aside class="sidebar">
+      <a class="brand sidebar-brand" href="../" target="_blank"><span class="brand-owl">Ow</span><span class="brand-lina">Lina</span><small>Admin</small></a>
+      <nav id="admin-nav" aria-label="Admin sections">
+        <button class="nav-btn active" data-view="projects"><i data-lucide="folder-kanban"></i><span>Проєкти</span></button>
+        <button class="nav-btn" data-view="static"><i data-lucide="images"></i><span>Static</span></button>
+        <button class="nav-btn" data-view="video"><i data-lucide="clapperboard"></i><span>Video</span></button>
+        <button class="nav-btn" data-view="media"><i data-lucide="library"></i><span>Медіатека</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <a class="quiet-link" href="../" target="_blank"><i data-lucide="external-link"></i><span>Відкрити сайт</span></a>
+        <button id="logout-btn" class="quiet-link"><i data-lucide="log-out"></i><span>Вийти</span></button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OwLina AI Studio</p>
+          <h1 id="view-title">Проєкти</h1>
+        </div>
+        <div class="toolbar">
+          <label class="search-box"><i data-lucide="search"></i><input id="search-input" type="search" placeholder="Пошук"></label>
+          <button id="add-btn" class="primary-btn" type="button"><i data-lucide="plus"></i><span>Додати</span></button>
+        </div>
+      </header>
+
+      <section class="summary" aria-label="Portfolio totals">
+        <div><strong id="count-projects">0</strong><span>проєктів</span></div>
+        <div><strong id="count-static">0</strong><span>static</span></div>
+        <div><strong id="count-video">0</strong><span>відео</span></div>
+        <div><strong id="count-media">0</strong><span>файлів</span></div>
+      </section>
+
+      <div id="status-line" class="status-line">Завантаження...</div>
+      <section id="content" class="content" aria-live="polite"></section>
+    </div>
+  </div>
+
+  <dialog id="edit-dialog">
+    <form id="edit-form" method="dialog">
+      <div class="dialog-head"><div><p class="eyebrow">Редагування</p><h2 id="dialog-title">Робота</h2></div><button class="icon-btn" type="button" data-close-dialog aria-label="Закрити"><i data-lucide="x"></i></button></div>
+      <div id="edit-fields" class="edit-fields"></div>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-dialog>Скасувати</button><button id="save-edit" class="primary-btn" type="submit">Зберегти</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="add-dialog">
+    <form id="add-form" method="dialog">
+      <div class="dialog-head"><div><p class="eyebrow">Нова робота</p><h2>Додати роботу</h2></div><button class="icon-btn" type="button" data-close-dialog aria-label="Закрити"><i data-lucide="x"></i></button></div>
+      <div class="edit-fields">
+        <label>Розділ<select id="add-type"><option value="static">Static</option><option value="video">Video</option></select></label>
+        <label>Файл з комп'ютера<input id="add-file" type="file" accept="image/*,video/*"></label>
+        <p class="field-divider"><span>або</span></p>
+        <label>Готове посилання Cloudinary <small>необов'язково</small><input id="add-url" type="url" placeholder="https://res.cloudinary.com/..."></label>
+        <label>Назва<input id="add-title" type="text" required></label>
+        <fieldset class="category-field"><legend>Категорії</legend><div id="add-category-options" class="category-options"></div></fieldset>
+      </div>
+      <p id="upload-status" class="dialog-note">Оберіть файл або вставте вже готове посилання. Повторний файл не дублюється.</p>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-dialog>Скасувати</button><button class="primary-btn" type="submit">Додати</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="../assets/vendor/supabase.js"></script>
+  <script src="../assets/vendor/lucide.js"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>

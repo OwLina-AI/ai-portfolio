@@ -200,6 +200,30 @@ if(heroMedia&&matchMedia('(pointer:fine)').matches){
     heroMedia.style.transform=`translate3d(${x}px,${y}px,0)`;
   });
 }
+const heroVideo=$('.hero-showreel video');
+const heroPlay=$('.hero-play');
+if(heroVideo){
+  heroVideo.muted=true;
+  heroVideo.loop=true;
+  heroVideo.playsInline=true;
+  heroVideo.autoplay=true;
+  heroVideo.preload='auto';
+  const startHeroVideo=()=>{
+    heroVideo.muted=true;
+    const promise=heroVideo.play();
+    if(promise&&typeof promise.catch==='function')promise.catch(()=>{});
+  };
+  const syncHeroPlay=()=>{if(heroPlay)heroPlay.classList.toggle('visible',heroVideo.paused)};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startHeroVideo,{once:true});
+  else startHeroVideo();
+  heroVideo.addEventListener('canplay',startHeroVideo,{once:true});
+  heroVideo.addEventListener('play',syncHeroPlay);
+  heroVideo.addEventListener('pause',syncHeroPlay);
+  heroVideo.addEventListener('ended',()=>{heroVideo.currentTime=0;startHeroVideo()});
+  heroPlay?.addEventListener('click',e=>{e.preventDefault();startHeroVideo();setTimeout(syncHeroPlay,120)});
+  ['pointerdown','touchstart','mousemove','scroll'].forEach(evt=>window.addEventListener(evt,startHeroVideo,{once:true,passive:true}));
+  setTimeout(syncHeroPlay,900);
+}
 if(matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
   const glow=document.createElement('div');
   glow.className='cursor-glow';
