@@ -120,3 +120,4 @@ button.disc{appearance:none}
 .lightbox-viewport.can-pan{cursor:grab}
 .lightbox-viewport.is-panning{cursor:grabbing}
 .lightbox img{pointer-events:auto;user-select:none;-webkit-user-drag:none;will-change:transform}
+.services-section .stabs{width:fit-content;max-width:100%;margin:0 auto 44px}
